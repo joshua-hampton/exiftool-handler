@@ -1,7 +1,7 @@
 # Python handler for ExifTool image metadata software
 
 This python module provides a handler for
-[ExifTool](https://exiftool.org/) software, which allows metadata
+[Phil Harvey's ExifTool software](https://exiftool.org/), which allows metadata
 to be embedded within and extracted from image files. The most
 important functionality added by the python module is
 
@@ -21,7 +21,24 @@ metadata fields need to be accessed.
 
 The contents of this documentation page are as follows:
 
-**Add navigation links here**
+- [Software dependencies](#section_dependencies)
+- [Special nomenclature and concepts used in this documentation](#section_nomenclature)
+- [Usage examples](#section_usage_examples)
+  - [Displaying embedded metadata](#usage_display](#)
+  - [Extracting embedded metadata](#usage_extract)
+  - [Loading a template](#usgae_load_a_template)
+  - [Testing emebedding metadata from a template](#usage_test_from_template)
+  - [Embedding metadata from a template](#usage_embed_from_template)
+- [Handler methods](#section_handler_methods)
+- [Fine details](#section_fine_details)
+  - [Extracted metadata](#section_extracted_metadata)
+  - [Template files](#section_template_files)
+  - [Recognised tags](#section_recognised_tags)
+  - [ExifTool man pages](#section_exiftool_documentation)
+  - [Metadata fields that contain date-time information](#section_controlled_datetime_values)
+  - [Metadata fields that contain Global Positioning System (GPS) coordinates](#section_controlled_gps_values)
+  - [ExifTool gotchas](#)
+
 
 <a name="section_dependencies">
 
@@ -31,15 +48,14 @@ The python module depends on:
 
 - [python 2.7](https://www.python.org/download/releases/2.7/) or
   [python 3.*](https://www.python.org/downloads/)
-- a relevant version of [PyYAML](https://pypi.org/project/PyYAML/) for the
-  version of python
-- [ExifTool](https://exiftool.org/)
-
+- [PyYAML](https://pypi.org/project/PyYAML/), which is imported as yaml
+- [ExifTool by Phil Harvey](https://exiftool.org/) 
 
 If the python module needs to used within a
 [Cygwin](https://www.cygwin.com/) environment on a Windows computer,
 [ExifTool](https://exiftool.org/) must be installed under Windows
-rather than under [Cygwin](https://www.cygwin.com/).
+rather than under [Cygwin](https://www.cygwin.com/). Note that the
+handler has not yet been tested fully within a Windows environment.
 
 <a name="section_nomenclature">
 
@@ -51,6 +67,7 @@ field, short tag name, and full tag name.
 
 
 <a name="nomenclature_inherent">
+
 All digital image files contain **inherent metadata fields**,
 e.g. for recording the image encoding system used and the size of the
 image in terms of number of pixels. Although the values of these
@@ -58,6 +75,7 @@ fields can be extracted, they cannot be changed after the file has
 been created.
 
 <a name="nomenclature_optional">
+
 Digital image files also have the capacity to have **optional metadata
 fields** embedded within them. These may be embedded
 at the time of file creation, as is typically the
@@ -97,6 +115,7 @@ fields containing:
 - [Global Positioning System (GPS) coordinates](#section_controlled_gps_values)
 
 <a name="nomenclature_list_tag">
+
 **List tags** are metadata fields that may contain multiple
 values. The order of these values is preserved when they are extracted from the
 file. It is permissible for them to contain only a single value. 
@@ -717,6 +736,7 @@ provides the identifier of
 
 </dl>
 
+<a name="section_fine_details">
 
 ## Fine details
 
@@ -989,22 +1009,6 @@ covering tag names, the following commands:
 |Search backwards for next instance of last-used search *pattern* | < N > |
 |Return to the top of the man page | < g > |
 
-
-<a name="section_controlled_values">
-
-### Metadata field that require controlled values
-
-Values for metadata fields that contain 
-
-- date-time information
-- Global Positioning System (GPS) coordinates
-
-are stored within files in controlled
-formats. [ExifTool](https://exiftool.org/) will accept the values in a wider
-variety of formats and will convert them before embedding them within a
-file. Moreover, it will convert the controlled values into a preferred format
-when extracting them from a file. 
-
 <a name="section_controlled_datetime_values">
 
 #### Metadata fields that contain date-time information
@@ -1166,6 +1170,7 @@ GPS altitudes are treated differently:
 - when extracting values, ExifTool will automatically add the symbol "m"
   (after a single space) to represent units of metres. This cannot be changed.
 
+<a name="section_exiftool_gotchas">
 
 ### ExifTool gotchas
 
