@@ -21,8 +21,6 @@ metadata fields need to be accessed.
 
 The contents of this documentation page are as follows:
 
-Last updated 2022-09-23 15:43 BST
-
 **Add navigation links here**
 
 <a name="section_dependencies">
@@ -36,6 +34,7 @@ The python module depends on:
 - a relevant version of [PyYAML](https://pypi.org/project/PyYAML/) for the
   version of python
 - [ExifTool](https://exiftool.org/)
+
 
 If the python module needs to used within a
 [Cygwin](https://www.cygwin.com/) environment on a Windows computer,
@@ -52,23 +51,19 @@ field, short tag name, and full tag name.
 
 
 <a name="nomenclature_inherent">
-
 All digital image files contain **inherent metadata fields**,
 e.g. for recording the image encoding system used and the size of the
 image in terms of number of pixels. Although the values of these
 fields can be extracted, they cannot be changed after the file has
 been created.
 
-
 <a name="nomenclature_optional">
-
 Digital image files also have the capacity to have **optional metadata
 fields** embedded within them. These may be embedded
 at the time of file creation, as is typically the
 case for photographs taken by digital cameras, or at any subsequent
 time. It is possible to remove optional metadata fields or to change
 their values.
-
 
 <a name="nomenclature_tag_names"> 
 
@@ -102,7 +97,6 @@ fields containing:
 - [Global Positioning System (GPS) coordinates](#section_controlled_gps_values)
 
 <a name="nomenclature_list_tag">
-
 **List tags** are metadata fields that may contain multiple
 values. The order of these values is preserved when they are extracted from the
 file. It is permissible for them to contain only a single value. 
