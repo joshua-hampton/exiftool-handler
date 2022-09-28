@@ -3,7 +3,7 @@
 This python module provides a handler for
 [Phil Harvey's ExifTool software](https://exiftool.org/), which allows metadata
 to be embedded within and extracted from image files. The most
-important functionality added by the python module is
+important functionality added by the handler is:
 
 - to allow metadata to be embedded from templates that allow
   substitution fields
@@ -14,10 +14,17 @@ It can also be used:
 - to display the metadata in a slightly nicer
   way than [ExifTool](https://exiftool.org/) allows natively
 
-The python module has been written with application of the National
-Centre for Atmospheric Science (NCAS) Image Metadata Standard in
+The handler has been created with application of the National Centre
+for Atmospheric Science (NCAS) Image Metadata Standard in
 mind. However, it may be used in any situation for which embedded
-metadata fields need to be accessed.
+metadata fields need to be accessed. It can be used for files of the
+followin gtypes, amongst others:
+
+- Joint Photographic Experts Group (JPEG) File Interchange Format (JFIF), 
+  which is commonly referred to as JPEG 
+- Portable Network Graphics (PNG)
+- Graphics Interchange Format (GIF)
+- Portable Document Format (PDF)
 
 The contents of this documentation page are as follows:
 
@@ -34,7 +41,7 @@ The contents of this documentation page are as follows:
   - [Extracted metadata](#section_extracted_metadata)
   - [Template files](#section_template_files)
   - [Recognised tags](#section_recognised_tags)
-  - [ExifTool man pages](#section_exiftool_documentation)
+  - [ExifTool man pages](#section_exiftool_man_pages)
   - [Metadata fields that contain date-time information](#section_controlled_datetime_values)
   - [Metadata fields that contain Global Positioning System (GPS) coordinates](#section_controlled_gps_values)
   - [ExifTool gotchas](#)
@@ -48,8 +55,8 @@ The python module depends on:
 
 - [python 2.7](https://www.python.org/download/releases/2.7/) or
   [python 3.*](https://www.python.org/downloads/)
-- [PyYAML](https://pypi.org/project/PyYAML/), which is imported as yaml
-- [ExifTool by Phil Harvey](https://exiftool.org/) 
+- [PyYAML](https://pypi.org/project/PyYAML/), which is imported as *yaml*
+- [Phil Harvey's ExifTool software](https://exiftool.org/) 
 
 If the python module needs to used within a
 [Cygwin](https://www.cygwin.com/) environment on a Windows computer,
@@ -89,10 +96,11 @@ their values.
 [ExifTool](https://exiftool.org/) to access the **(tag) values** of
 metadata fields. Some of the **short tag names** given in the
 [ExifTool documentation](#section_exiftool_man_pages) are ambiguous,
-since they can be associated with more than one **family 1
+since they can be associated with more than one **metadata
 group**. Consequently, this documentation makes use of **full tag
 names**, which are colon-delimited concatenations of the family 1
-group name and the short tag name. For example, the full tag name for
+group name (which will be referred to as the **group name** in this
+documentation) and the short tag name. For example, the full tag name for
 the Dublin Core *Creator* metadata field is *XMP-dc:Creator*. Note
 that the tag names/descriptions displayed by metadata-aware image
 viewing applications tend to be slightly different to the ones used by
@@ -106,8 +114,8 @@ symbols such as for degrees "°".
 
 <a name="nomeclature_controlled">
 
-Some tag values are **controlled**, which means that they [must conform to a
-specific format](#section_controlled_values). In most cases, this is because the values are
+Some tag values are **controlled**, which means that they must conform
+to a specific format. In most cases, this is because the values are
 intended to be interpreted automatically by computer systems, e.g for
 fields containing:
 
@@ -117,8 +125,9 @@ fields containing:
 <a name="nomenclature_list_tag">
 
 **List tags** are metadata fields that may contain multiple
-values. The order of these values is preserved when they are extracted from the
-file. It is permissible for them to contain only a single value. 
+values. The order of these values is preserved when metadata are
+extracted from the file. It is permissible for list tags to contain only a
+single value.
 
 <a name="nomeclature_structured_tag">
 
@@ -128,10 +137,10 @@ dictionary than a list. In practice, [ExifTool](https://exiftool.org/)
 allows each element to be accessed using a **flattened tag name**,
 which makes it look like any other (non-list-tag) metadata field.
 
-Metadata fields can be of 3 basic types, which are embedded in slighly
-different ways. However, since they are all handled in the same way by
-[ExifTool](https://exiftool.org/), it is not necessary to know
-anything about the technical differences. 
+Metadata fields can be of 3 basic types, which rely on slightly
+different embedding technologies. However, since they are all handled
+in the same way by [ExifTool](https://exiftool.org/), it is not
+necessary to know anything about the technical differences.
 
 - [Exchangeable image file format (officially known as
   Exif)](https://en.wikipedia.org/wiki/Exif) metadata fields are
@@ -146,9 +155,9 @@ anything about the technical differences.
   (XMP)](https://en.wikipedia.org/wiki/Extensible_Metadata_Platform)
   metadata fields are probably the most-commonly-used type. All of the
   fields covered by the NCAS Image metadata standard are of the XMP
-  type. The family 1 group names used by
+  type. The (family 1) group names used by
   [ExifTool](https://exiftool.org/) are derived by appending the
-  official namespace prefixes to a leading *XMP-*. Some group names
+  official namespace prefixes to a leading *"XMP-"*. Some group names
   are shortened for convenience.
 
 
@@ -158,7 +167,7 @@ anything about the technical differences.
 
 All of the following usage examples should be initiated with one of
 the two following code snippets, depending on whether they are being
-run under a python 2.7 or python3.* environment:
+run under a python 2.7 or python3.* environment.
 
 ````python
 # For python 2.7
@@ -169,6 +178,9 @@ handler = module_exiftool_python2.Handler()
 import module_exiftool_python3
 handler = module_exiftool_python3.Handler()
 ````
+
+Note that the code for the python2 and python 3 modules is identifical
+except for one line.
 
 `<image-file-path>` will be used to represent the path of an image file. This
 may be an absolute or a relative path and may use "`~`" to represent the path
@@ -224,8 +236,12 @@ where [`metadata` is a python dictionary](#section_extracted_metadata)
 whose values are accessed using [full tag
 names](#nomenclature_tag_names) as keys.
 
+
+
 As for the case of displaying metadata, the metadata remain available to the
-handler and can be subsequently displayed using the [display method](#method_display) with no input argument.
+handler through `handler.metadata["
+
+and can be subsequently displayed using the [display method](#method_display) with no input argument.
 
 <a name="usage_load_a_template">
 
@@ -247,6 +263,9 @@ where `template_id` is a string that uniquely identifies the template
 (in the context of the other templates loaded by the handler). Its
 value is defined within the file.
 
+The handler will return an empty string, i.e. "", if it encounters any
+problems with the [template](#section_template_files).
+
 The ids of all templates that have been loaded by the handler can be seen
 using the [show_templates_available method](#method_show_templates_available).
 
@@ -259,7 +278,7 @@ handler.show_templates_available()
 ### Testing emebedding metadata from a template
 
 The [test_from_template method](#method_test_from_template) is
-intended for testing how metadata will be embedded within a file
+intended for testing the implications of embedding metadata within a file
 without actually embedding the metadata. It takes 1, 2, or 3 input
 arguments, which progressively test different aspects of the embedding
 process. The input arguments are:
@@ -294,8 +313,9 @@ will:
 
 - allow you to check that any [short tag
   names](#nomenclature_tag_names) supplied within the template have
-  been interpreted as belonging to the intended [family 1
-  group](#nomenclature_tag_names)
+  been interpreted as belonging to the intended [metadata
+  group](#nomenclature_tag_names) since metadata fields are shown by
+  [full tag names](#nomenclature_tag_names).
 
 - highlight substitution fields with bold text, if your terminal
   allows this. An alternative way of displaying the substitution
@@ -1011,7 +1031,7 @@ covering tag names, the following commands:
 
 <a name="section_controlled_datetime_values">
 
-#### Metadata fields that contain date-time information
+### Metadata fields that contain date-time information
 
 In the case of XMP family metadata fields that are designed to contain
 date-time information, e.g.:
@@ -1091,7 +1111,7 @@ An alternative is to use the [python format string
 
 <a name="section_controlled_gps_values">
 
-#### Metadata fields that contain Global Positioning System (GPS) coordinates
+### Metadata fields that contain Global Positioning System (GPS) coordinates
 
 A bit more care needs to be taken with GPS latitudes and longitudes since
 
