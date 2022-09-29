@@ -1,0 +1,81 @@
+# This template file is intended to be used:
+#
+# - with the ExifTool handler software available from 
+#   https://github.com/dahooper/exiftool-handler
+#
+# - for version 1.0 of the NCAS-IMAGE metadata standard as applied
+#   to a photograph
+#
+# Any pre-populated fields should be left as is. All other fields must
+# be populated in accordance with both the syntax expected by the
+# ExifTool handler software and the NCAS-IMAGE metadata standard
+#
+- template_id: 
+#
+#
+# Version of the standard being followed
+#
+- XMP-photoshop:Instructions: |
+    Metadata follow the National Centre for Atmospheric Science Image
+    Metadata Standard v1.0: https://doi.org/10.5281/zenodo.6368295
+#
+#
+# Description of what is shown in the image
+#
+- XMP-photoshop:Headline: 
+#
+- XMP-dc:Description: 
+#
+#
+# Location of the camera
+#
+- XMP-iptcExt:LocationCreatedLocationName: 
+#
+- XMP-iptcExt:LocationCreatedGPSAltitude: 
+#
+- XMP-iptcExt:LocationCreatedGPSLatitude: 
+#
+- XMP-iptcExt:LocationCreatedGPSLongitude: 
+#
+#
+# Date-time details (note that XMP-xmp:MetadataDate will be populated
+# automatically by the ExifTool handler software)
+#
+- XMP-xmp:CreateDate: 
+#
+#
+# Licensing and Acknowledgement details 
+#
+- XMP-dc:Rights: |
+    Use of this image is covered by the (UK) Open Government Licence,
+    http://www.nationalarchives.gov.uk/doc/open-government-licence/ .
+
+- XMP-xmpRights:WebStatement: |
+    http://www.nationalarchives.gov.uk/doc/open-government-licence/
+
+- XMP-photoshop:Credit: National Centre for Atmospheric Science (NCAS)
+#
+#
+# Source of the image 
+#
+- XMP-dc:Title: 
+
+- XMP-dc:Relation: 
+#
+#
+# Instrument Scientist’s Details
+#
+- XMP-dc:Creator: 
+
+- XMP-iptcCore:CreatorWorkEmail: 
+
+- XMP-iptcExt:CreatorIdentifier: 
+#
+#
+# Principal Investigator’s Details
+#
+- XMP-iptcExt:ContributorName: 
+
+- XMP-iptcExt:ContributorIdentifier: 
+
+- XMP-iptcExt:ContributorRole: 

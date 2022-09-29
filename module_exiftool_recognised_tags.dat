@@ -2,12 +2,13 @@
 # (module_exiftool_python2.py and module_exiftool_python3.py) available from
 # https://github.com/dahooper/exiftool-handler
 #
-
 # It contains the full tag names of metadata fields that are
-# recognised by the ExifTool handler for emebedding within files. List tags
+# recognised by the ExifTool handler for embedding within files. List tags
 # are indicated by a "+" sign before the tag name.
 #
-
+# Additional details may be added. These do not have to be in alphabetical 
+# order.
+#
   Canon:OwnerName
   Canon:TimeZone
   ExifIFD:CreateDate
@@ -44,12 +45,14 @@
   XMP-iptcExt:ContributorIdentifier
   XMP-iptcExt:ContributorName
   XMP-iptcExt:ContributorRole
-  XMP-iptcExt:LocationShownCity
+  XMP-iptcExt:LocationCreatedCity
   XMP-iptcExt:LocationCreatedCountryCode
   XMP-iptcExt:LocationCreatedCountryName
   XMP-iptcExt:LocationCreatedGPSAltitude
   XMP-iptcExt:LocationCreatedGPSLatitude
   XMP-iptcExt:LocationCreatedGPSLongitude
+  XMP-iptcExt:LocationCreatedIdentifier
+  XMP-iptcExt:LocationCreatedLocationId
   XMP-iptcExt:LocationCreatedLocationName
   XMP-iptcExt:LocationCreatedProvinceState
   XMP-iptcExt:LocationCreatedSublocation
@@ -60,12 +63,14 @@
   XMP-iptcExt:LocationShownGPSAltitude
   XMP-iptcExt:LocationShownGPSLatitude
   XMP-iptcExt:LocationShownGPSLongitude
-+ XMP-iptcExt:LocationShownIdentifier
-+ XMP-iptcExt:LocationShownLocationId
+  XMP-iptcExt:LocationShownIdentifier
+  XMP-iptcExt:LocationShownLocationId
   XMP-iptcExt:LocationShownLocationName
   XMP-iptcExt:LocationShownProvinceState
   XMP-iptcExt:LocationShownSublocation
   XMP-iptcExt:LocationShownWorldRegion
+  XMP-iptcExt:TemporalCoverageFrom
+  XMP-iptcExt:TemporalCoverageTo
   XMP-photoshop:Credit
   XMP-photoshop:DateCreated
   XMP-photoshop:Headline
@@ -74,9 +79,4 @@
   XMP-xmp:CreateDate
   XMP-xmp:MetadataDate
   XMP-xmp:ModifyDate
-  XMP-xmpRights:Certificate
-  XMP-xmpRights:Marked
-+ XMP-xmpRights:Owner
-  XMP-xmpRights:UsageTerms
   XMP-xmpRights:WebStatement
-
