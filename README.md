@@ -18,7 +18,7 @@ The handler has been created with application of the National Centre
 for Atmospheric Science (NCAS) Image Metadata Standard in
 mind. However, it may be used in any situation for which embedded
 metadata fields need to be accessed. It can be used for files of the
-followin gtypes, amongst others:
+following types, amongst others:
 
 - Joint Photographic Experts Group (JPEG) File Interchange Format (JFIF), 
   which is commonly referred to as JPEG 
@@ -28,13 +28,15 @@ followin gtypes, amongst others:
 
 The contents of this documentation page are as follows:
 
-- [Software dependencies](#section_dependencies)
-- [Special nomenclature and concepts used in this documentation](#section_nomenclature)
+- [Basics](#section_basics)
+  - [Software dependencies](#section_dependencies)
+  - [Details of the files available in the repository](#section_details_of_files)
+  - [Special nomenclature and concepts used in this documentation](#section_nomenclature)
 - [Usage examples](#section_usage_examples)
-  - [Displaying embedded metadata](#usage_display](#)
+  - [Displaying embedded metadata](#usage_display)
   - [Extracting embedded metadata](#usage_extract)
-  - [Loading a template](#usgae_load_a_template)
-  - [Testing emebedding metadata from a template](#usage_test_from_template)
+  - [Loading a template](#usage_load_a_template)
+  - [Testing embedding metadata from a template](#usage_test_from_template)
   - [Embedding metadata from a template](#usage_embed_from_template)
 - [Handler methods](#section_handler_methods)
 - [Fine details](#section_fine_details)
@@ -46,10 +48,13 @@ The contents of this documentation page are as follows:
   - [Metadata fields that contain Global Positioning System (GPS) coordinates](#section_controlled_gps_values)
   - [ExifTool gotchas](#)
 
+<a name="section_basics">
+
+## Basics
 
 <a name="section_dependencies">
 
-## Software dependencies
+### Software dependencies
 
 The python module depends on:
 
@@ -64,9 +69,34 @@ If the python module needs to used within a
 rather than under [Cygwin](https://www.cygwin.com/). Note that the
 handler has not yet been tested fully within a Windows environment.
 
+<a name="section_details_of_files">
+
+### Details of the files available in the repository
+
+The repository makes a number of files available. The following are
+required for using the ExifTool handler:
+
+- *module_exiftool_python2.py* is only required within a python 2.7 environment 
+- *module_exiftool_python3.py* is only required within a python 3.* environment 
+- *module_exiftool_recognised_tags.dat* is required irrespective of
+  the version of python. It contains details of metadata fields that
+  are "recognised" by the handler for embedding within files.
+
+The following provide example templates for embedding metadata:
+
+- *module_exiftool_example_template.yaml* illustrates how different
+   features of template file syntax
+- *ncas-image-metadata-standard_v1-0_template_photo.yaml* is intended
+  for applying version 1.0 of the NCAS-IMAGE metadata standard to
+  photographs.
+- *ncas-image-metadata-standard_v1-0_template_data-plot.yaml* is
+  intended for applying version 1.0 of the NCAS-IMAGE metadata
+  standard to data plots
+
+
 <a name="section_nomenclature">
 
-## Special nomenclature and concepts used in this documentation
+### Special nomenclature and concepts used in this documentation
 
 Note that the following terms are local to this document rather than
 being in common usage: inherent metadata field, optional metadata
@@ -112,7 +142,7 @@ only designed to embed values of string type. Such values may include
 **Unicode characters**, which is useful since this permits the use of
 symbols such as for degrees "°".
 
-<a name="nomeclature_controlled">
+<a name="nomenclature_controlled">
 
 Some tag values are **controlled**, which means that they must conform
 to a specific format. In most cases, this is because the values are
@@ -129,7 +159,7 @@ values. The order of these values is preserved when metadata are
 extracted from the file. It is permissible for list tags to contain only a
 single value.
 
-<a name="nomeclature_structured_tag">
+<a name="nomenclature_structured_tag">
 
 **Structured tags** may also contain multiple values, albeit as
 closely-related key/value pairs and so are more like a python
@@ -179,8 +209,8 @@ import module_exiftool_python3
 handler = module_exiftool_python3.Handler()
 ````
 
-Note that the code for the python2 and python 3 modules is identifical
-except for one line.
+Note that the code for the python2 and python 3 modules is identical
+eexcept for one line.
 
 `<image-file-path>` will be used to represent the path of an image file. This
 may be an absolute or a relative path and may use "`~`" to represent the path
@@ -200,7 +230,7 @@ handler.display(<image-file-path>)
 The [displayed metadata remain available to the ExifTool
 handler](#section_extracted_metadata) until metadata are
 displayed/extracted for a new file or until metadata are embedded
-within a file. Consequently, the contents of a targetted file can be
+within a file. Consequently, the contents of a targeted file can be
 redisplayed at any time using the same handler method, but without an
 input argument:
 
@@ -236,12 +266,15 @@ where [`metadata` is a python dictionary](#section_extracted_metadata)
 whose values are accessed using [full tag
 names](#nomenclature_tag_names) as keys.
 
+The metadata dictionary remains available to the handler at
+`handler.metadata["extracted"]`. If you prefer to access it through
+the handler rather than as a returned object, the value of the second
+(optional) input argument (`should_return_metadata`) should be given
+as `False`, i.e.
 
-
-As for the case of displaying metadata, the metadata remain available to the
-handler through `handler.metadata["
-
-and can be subsequently displayed using the [display method](#method_display) with no input argument.
+ ````python
+handler.extract(<image-file-path>, False)
+````
 
 <a name="usage_load_a_template">
 
@@ -251,9 +284,10 @@ A [template](#section_template_files), whose file path is given by
 `<template-file-path>`, will need to be loaded before any of the
 subsequent uses of the ExifTool handler can be demonstrated. The
 accompanying example template file,
-`module_exiftool_example_template.yaml`, can be used for this
-purpose. The template is loaded using the [load_a_template
-method](#method_load_a_template):
+*module_exiftool_example_template.yaml*, can be used for this
+purpose. It has been designed to illustrate the various features of a
+template file rather than to provide useful metadata. The template is
+loaded using the [load_a_template method](#method_load_a_template):
 
  ````python
 template_id = handler.load_a_template(<template-file-path>)
@@ -266,8 +300,9 @@ value is defined within the file.
 The handler will return an empty string, i.e. "", if it encounters any
 problems with the [template](#section_template_files).
 
-The ids of all templates that have been loaded by the handler can be seen
-using the [show_templates_available method](#method_show_templates_available).
+The identifiers of all templates that have been loaded by the handler
+can be seen using the [show_templates_available
+method](#method_show_templates_available).
 
  ````python
 handler.show_templates_available()
@@ -275,7 +310,7 @@ handler.show_templates_available()
 
 <a name="usage_test_from_template">
 
-### Testing emebedding metadata from a template
+### Testing embedding metadata from a template
 
 The [test_from_template method](#method_test_from_template) is
 intended for testing the implications of embedding metadata within a file
@@ -309,15 +344,13 @@ the first argument:
 handler.test_from_template(template_id)
 ````
 
-will:
-
-- allow you to check that any [short tag
+- allows you to check that any [short tag
   names](#nomenclature_tag_names) supplied within the template have
   been interpreted as belonging to the intended [metadata
-  group](#nomenclature_tag_names) since metadata fields are shown by
+  group](#nomenclature_tag_names), since metadata fields are shown by
   [full tag names](#nomenclature_tag_names).
 
-- highlight substitution fields with bold text, if your terminal
+- highlights substitution fields with bold text, if your terminal
   allows this. An alternative way of displaying the substitution
   fields within a template is to use the [show_template_requirements
   method](#method_show_template_requirements).
@@ -335,10 +368,10 @@ the first two input arguments:
 handler.test_from_template(template_id, substitutions)
 ````
 
-will test whether the substitution values have been formatted as
-expected. These will be highlighted with bold text if your terminal will allow
-it. If the template contains no substitution fields, an empty python
-dictionary, i.e. `{}`, should be supplied.
+will additionally test whether the substituted values have been
+formatted as expected. These will be highlighted with bold text if
+your terminal will allow it. If the template contains no substitution
+fields, an empty python dictionary, i.e. `{}`, should be supplied.
 
 The following would be appropriate for the example template file:
 
@@ -350,8 +383,14 @@ substitutions = {
 ````
 
 Note that it is not necessary to provide a substitution value for
-<em>\_\_utcnow\_\_</em>, which is automatically available and gives the current
-UTC date-time.
+<em>\_\_utcnow\_\_</em>, which is automatically available and gives
+the current UTC datetime. Note that this substitution field is used
+for the *XMP-xmp:CreateDate* entry in the example template
+field. Moreover, the *XMP-dc:Date* entry makes use of another
+automatically available substitution value, *__utcnowstr__*, which
+provides a string representation of <em>\_\_utcnow\_\_</em> generated
+by the [return_datetime_string
+method](#method_return_datetime_string).
 
 Supplying the [test_from_template method](#method_test_from_template) with
 all three input arguments:
@@ -360,8 +399,8 @@ all three input arguments:
 handler.test_from_template(template_id, substitutions, <image-file-path>)
 ````
 
-will test whether any metadata fields would be overwritten by embedding the
-new metadata. 
+will additionally test whether any metadata fields would be
+overwritten by embedding the new metadata.
 
 
 <a name="usage_embed_from_template">
@@ -423,7 +462,7 @@ This section gives details of each of the handler's methods.
   - If the path of an image file is supplied as the first input argument,
     *option*, the method will display the metadata extracted from that file.
   - If no input argument is given, the method will display the metadata
-    extracted from the the last image file targetted. Note that these metadata
+    extracted from the the last image file targeted. Note that these metadata
     become unavailable after new metadata are embedded into a file (since the
     embedded metadata will have changed).
   - Supplying the path of a text file as the second input argument,
@@ -492,7 +531,7 @@ This section gives details of each of the handler's methods.
   ````python
   input_metadata = {
       "XMP-dc:Creator": "Hooper, David A.",
-      "XMP-photoshop:Headline": "This is a trvial example"}
+      "XMP-photoshop:Headline": "This is a trivial example"}
   exit_code = handler.embed_from_input(input_metadata, <image-file-path>)
   ````
 
@@ -550,7 +589,7 @@ This section gives details of each of the handler's methods.
   Refer to the [Extracted metadata section](#section_extracted_metadata) for
   more details about the python dictionary returned by this method. 
 
-  The metadata will remain avaiable to the handler until either the
+  The metadata will remain available to the handler until either the
   [display](#method_display) method is used to display the metadata for a new
   file or new metadata are embedded within a file using the
   [embed_from_input](#method_embed_from_input) method or the
@@ -595,7 +634,7 @@ This section gives details of each of the handler's methods.
   method.
 
   The first input argument (*option_name*) should provide the name of the
-  option and the second input argument whould supply the required value
+  option and the second input argument should supply the required value
   *option_value*.
 
   A value of 0 will be returned if the option was set successfully, but a
@@ -611,7 +650,7 @@ This section gives details of each of the handler's methods.
   The first column shows the option name. The second column shows the
   current value. The third column shows the permissible values. 
 
-  Note that in the case of options whose permissble values are *True*
+  Note that in the case of options whose permissible values are *True*
   and *False*, these will be shown as *1* or *0*, respectively, in the
   second column.
 
@@ -690,7 +729,7 @@ This section gives details of each of the handler's methods.
   them needing to be provided by the second input argument. 
 
   The second input argument (*substitutions*) should be a python dictionary
-  containing the names and values of susbtitution fields within the
+  containing the names and values of substitution fields within the
   template. If only the first two input arguments are supplied, the method
   will highlight the locations of the substitution values. If the template
   does not contain any substitution fields, an empty dictionary, i.e. *{}*,
@@ -704,10 +743,10 @@ This section gives details of each of the handler's methods.
 
   <a name="method_test_from_template">
   <dt><b>test_from_template</b>(<em>template_id[, substitutions[, file_path]]</em>)</dt>
-  <dd>Tests embedding metadata from a template into a file without comitting the changes.
+  <dd>Tests embedding metadata from a template into a file without committing the changes.
 
   This method is designed to be analogous to the one
-  ([embed_from_template](#mmethod_embed_from_template)) used to embed
+  ([embed_from_template](#method_embed_from_template)) used to embed
   metadata from a template. It allows each stage of the process to be
   tested, by providing 1, 2, or 3 input arguments.
   
@@ -802,7 +841,7 @@ returned by ExifTool/the handler, since:
   encoding](https://en.wikipedia.org/wiki/JSON). The [display
   method](#method_display) indicates the interpreted data type by the letter
   *"b"* to indicate a Boolean value, *"f"* to indicate a float, *"i"*, and
-  *"s"* to indiate a string.
+  *"s"* to indicate a string.
   
 Not all of the metadata fields provided within the python dictionary are
 extracted from the file:
@@ -847,7 +886,7 @@ documentation](https://yaml.org/spec/1.2.2/). The accompanying
 example file `module_exiftool_example_template.yaml` should be used to
 identify all of the features described below.
 
-- Identation is significant in [YAML syntax](https://yaml.org/spec/1.2.2/) and
+- Indentation is significant in [YAML syntax](https://yaml.org/spec/1.2.2/) and
   so all lines should begin no indentation (except in the case of multi-line
   values, which will be described shortly).
 
@@ -879,7 +918,7 @@ identify all of the features described below.
 - For a value that is intended to contain line breaks, the entry should begin
   with *"- key: |"*, where the "|" character indicates that *value* will begin
   on the next line. The first line of *value* should be indented by more than
-  the first charcter of *key* on the previous line, i.e. by at least 4 spaces
+  the first charter of *key* on the previous line, i.e. by at least 4 spaces
   (although the exact number of spaces is arbitrary). All subsequent lines of
   *value* should begin with at least the same level of indentation as the
   first line. If more indentation is used, the extra spaces are interpreted as
@@ -903,21 +942,21 @@ If
   example, the syntax `{supplied_datetime:%Y:%m:%d %H:%M:%S]` may be used
   to provide the value for a field 
 
-represent a substution field named `supplied_datetime` whose value should
+represent a substitution field named `supplied_datetime` whose value should
   be formatted in a way appropriate to 
 
 a date-time substitution value.  If *value* is intended to contain a curly
   brace, i.e. either "{" or "}", as a character rather than as an indication
-  subsitution field, it should be escaped by using the charcter twice,
+  substitution field, it should be escaped by using the character twice,
   i.e. "{{" or "}}". If *value* begins with a substitution field, the whole of
-  *value* must be conatined within either single or double quotation marks
+  *value* must be contained within either single or double quotation marks
   (otherwise the YAML parser will interpret *value* incorrectly).
 
 - There are two ways to assign multiple values to a [list
   tag](#nomenclature_list_tag). If the values may all fit on one line, the
-  snytax `- tag_name: [value_1, value_2, value_3]` may be used, i.e. with the
+  syntax `- tag_name: [value_1, value_2, value_3]` may be used, i.e. with the
   values separated from each other by a comma and a space ", " and all
-  enclosed within square brakets, "[" and "]". Otherwise, each value may be
+  enclosed within square brackets, "[" and "]". Otherwise, each value may be
   given on a separate line using the syntax
   ````python
     - tag_name:
@@ -935,7 +974,7 @@ a date-time substitution value.  If *value* is intended to contain a curly
 
 By default, the handler will only allow values to be embedded within metadata
 fields that are "recognised", i.e. if the corresponding [full tag
-name](#nomemclature_tag_names) is given within the accompanying file
+name](#nomenclature_tag_names) is given within the accompanying file
 *module_exiftool_recognised_tags.dat*. The file also contains an indication of
 whether the metadata field is a list tag (by prefixing the tag name with a "+"
 symbol). Details of how to add additional tag names to this file are given at
@@ -943,14 +982,14 @@ the bottom of this section.
 
 This file is required in order to overcome a few peculiarities of ExifTool:
 
-- Some [short tag names](#nomemclature_tag_names) are "ambiguous" in that they
+- Some [short tag names](#nomenclature_tag_names) are "ambiguous" in that they
   can be used to represent two or more [full tag
-  names](#nomemclature_tag_names) that are associated with different metadata
+  names](#nomenclature_tag_names) that are associated with different metadata
   groups, e.g. *ExifIFD:CreateDate* and *XMP-xmp:CreateDate*. ExifTool will
-  decide which [full tag name](#nomemclature_tag_names) to use depending on
+  decide which [full tag name](#nomenclature_tag_names) to use depending on
   the context, although this choice might not be what was
-  intended. Consequently, tyhe handler will only accept [short tag
-  names](#nomemclature_tag_names) that are "unambiguous", i.e. that are
+  intended. Consequently, the handler will only accept [short tag
+  names](#nomenclature_tag_names) that are "unambiguous", i.e. that are
   associated with only one metadata group in the recognised tags file. Details
   of the recognised tags can be shown using the [show_recognised_tags
   method](#method_show_recognised_tags).
@@ -970,23 +1009,23 @@ If you need to embed values within a metadata field that is not covered by the
 recognised tags file, you will need to consult the [ExifTool man
 pages](#section_exiftool_man_pages) in order to determine:
 
-- the appropriate [full tag name](#nomemclature_tag_names), by appending the
-  the [short tag name](#nomemclature_tag_names) to the metadata group name,
+- the appropriate [full tag name](#nomenclature_tag_names), by appending the
+  the [short tag name](#nomenclature_tag_names) to the metadata group name,
   separated by a colon ":" (without adding spaces).
 - whether or not the metadata field is a [list tag](#nomenclature_list_tag)
 
 The format of the recognised tags file is very simple
 
-- Any lines begininning with the "#" symbol can be used to give comments. They
+- Any lines beginning with the "#" symbol can be used to give comments. They
   will be ignored by the handler.
-- The [full tag name](#nomemclature_tag_names) should be preceeded by the "+"
+- The [full tag name](#nomenclature_tag_names) should be preceded by the "+"
   symbol if it corresponds to a [list tag](#nomenclature_list_tag). 
 - In order to aid human readability, spaces have been used in the recognised
-  tags file to indent the [full tag names](#nomemclature_tag_names) of non
+  tags file to indent the [full tag names](#nomenclature_tag_names) of non
   [list tags](#nomenclature_list_tag) and to separate the "+" symbol from the
-  the [full tag name](#nomemclature_tag_names) in the case of [list
+  the [full tag name](#nomenclature_tag_names) in the case of [list
   tags](#nomenclature_list_tag). However, these are not necessary. Moreover,
-  aribitrary numbers of spaces may be used.
+  arbitrary numbers of spaces may be used.
  
 In principle, the handler can be forced to accept unrecognised tag names by
 supplying the option name *allow_unrecognised_tags* and option value *False*
@@ -1126,7 +1165,7 @@ The handler allows the extraction format to be specified by supplying the
 option name `gps_extraction` with one of the values of `option_value` from the
 table below to the [set_option method](#method_set_option). The default option
 value is *+D*, since this is the most convenient format for handling by a
-computer program. The Latitude and Logitude columns in the table below show
+computer program. The Latitude and Longitude columns in the table below show
 how the same values will be extracted using the different extraction format
 options.
 
@@ -1205,16 +1244,16 @@ When displaying metadata using variations on the command `exiftool
   difficult to read. The handler shows the values with the
   line breaks included.
 
-- for [list tags](#nomeclature_tag_names) that contain multiple
+- for [list tags](#nomenclature_tag_names) that contain multiple
   values, ExifTool will show the values concatenated with a comma
   followed by a space, i.e. ", ", as a delimiter. It is not possible
   to distinguish this from a single value that just so happens to
   contain commas. The handler shows each value on a separate line with
-  an incremental number shown in quare brackets after the [full tag
+  an incremental number shown in square brackets after the [full tag
   name](#nomenclature_tag_names).
 
 
-End of documentaion 
+End of documentation 
 
 
 
