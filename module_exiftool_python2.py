@@ -5,7 +5,7 @@
 # Copies of this software and its documenttaion are openly-accessible from 
 #   https://github.com/dahooper/exiftool-handler
 # 
-# Last updated 2022/09/28
+# Last updated 2022/10/12
 #
 import datetime, os, platform, subprocess, string, sys, textwrap, yaml
 #
@@ -630,9 +630,9 @@ class Handler():
 ###
 #
     def return_file_path_for_os(self, supplied_file_path):
-        if self.variables["operating_system"] == "cygwin":
-            file_path_for_os = \
-                subprocess.check_output(["cygpath", "-w", supplied_file_path])
+        if self.variables["operating_system"].startswith("CYGWIN"):
+            file_path_for_os = subprocess.check_output(
+                ["cygpath", "-w", supplied_file_path]).rstrip()
         else:
             file_path_for_os = supplied_file_path
 
