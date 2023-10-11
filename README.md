@@ -199,9 +199,6 @@ from exiftool_handler import module_exiftool_python
 handler = module_exiftool_python.Handler()
 ````
 
-Note that the code for the python2 and python 3 modules is identical
-eexcept for one line.
-
 `<image-file-path>` will be used to represent the path of an image file. This
 may be an absolute or a relative path and may use "`~`" to represent the path
 of a home directory.
