@@ -75,7 +75,7 @@ handler has not yet been tested fully within a Windows environment.
 The repository makes a number of files available. The following are
 required for using the ExifTool handler:
 
-- *module_exiftool_python3.py*  
+- *module_exiftool_python.py*  
 - *module_exiftool_recognised_tags.dat* contains details of metadata fields that
   are "recognised" by the handler for embedding within files.
 
