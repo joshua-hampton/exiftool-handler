@@ -58,8 +58,7 @@ The contents of this documentation page are as follows:
 
 The python module depends on:
 
-- [python 2.7](https://www.python.org/download/releases/2.7/) or
-  [python 3.*](https://www.python.org/downloads/)
+- [python 3.*](https://www.python.org/downloads/)
 - [PyYAML](https://pypi.org/project/PyYAML/), which is imported as *yaml*
 - [Phil Harvey's ExifTool software](https://exiftool.org/) 
 
@@ -76,10 +75,8 @@ handler has not yet been tested fully within a Windows environment.
 The repository makes a number of files available. The following are
 required for using the ExifTool handler:
 
-- *module_exiftool_python2.py* is only required within a python 2.7 environment 
-- *module_exiftool_python3.py* is only required within a python 3.* environment 
-- *module_exiftool_recognised_tags.dat* is required irrespective of
-  the version of python. It contains details of metadata fields that
+- *module_exiftool_python3.py*  
+- *module_exiftool_recognised_tags.dat* contains details of metadata fields that
   are "recognised" by the handler for embedding within files.
 
 The following provide example templates for embedding metadata:
@@ -195,18 +192,11 @@ necessary to know anything about the technical differences.
 
 ## Usage examples
 
-All of the following usage examples should be initiated with one of
-the two following code snippets, depending on whether they are being
-run under a python 2.7 or python3.* environment.
+All of the following usage examples should be initiated with the following code snippet.
 
 ````python
-# For python 2.7
-import module_exiftool_python2
-handler = module_exiftool_python2.Handler()
-
-# For python 3.*
-import module_exiftool_python3
-handler = module_exiftool_python3.Handler()
+from exiftool_handler import module_exiftool_python
+handler = module_exiftool_python.Handler()
 ````
 
 Note that the code for the python2 and python 3 modules is identical

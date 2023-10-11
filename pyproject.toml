@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "exiftool-handler"
+dynamic = ["version"]
+description = 'A python handler for ExifTool image metadata software'
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+  { name = "David Hooper", email = "david.hooper@ncas.ac.uk" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["pyyaml"]
+
+[project.urls]
+Documentation = "https://github.com/dahooper/exiftool-handler#readme"
+Issues = "https://github.com/dahooper/exiftool-handler/issues"
+Source = "https://github.com/dahooper/exiftool-handler"
+
+[tool.hatch.version]
+path = "src/exiftool_handler/__about__.py"
